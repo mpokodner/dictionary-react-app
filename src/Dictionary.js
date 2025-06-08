@@ -6,7 +6,11 @@ import "./Dictionary.css";
 
 export default function Dictionary() {
   const [keyword, setKeyword] = useState("");
-  const [results, setResults] = useState(null);
+  const [results, setResults] = useState({
+    keyword: "",
+    phonetic: "",
+    meanings: [],
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
