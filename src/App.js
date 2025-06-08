@@ -7,8 +7,13 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+        <header className="App-header d-flex align-items-left p-3">
+          <img
+            src={logo}
+            className="img-fluid"
+            style={{ height: "40px" }}
+            alt="logo"
+          />
         </header>
         <main>
           <Dictionary />
