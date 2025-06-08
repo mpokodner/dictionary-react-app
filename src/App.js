@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-        <header className="App-header d-flex align-items-left p-3">
+        <header className="App-header d-flex align-center justify-left p-3">
           <img
             src={logo}
             className="img-fluid"
