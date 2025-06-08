@@ -7,10 +7,10 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-        <header className="App-header d-flex align-center justify-left p-3">
+        <header className="App-header">
           <img
             src={logo}
-            className="img-fluid"
+            className="App-logo img-fluid"
             style={{ height: "40px" }}
             alt="logo"
           />
