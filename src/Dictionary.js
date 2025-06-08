@@ -1,3 +1,4 @@
+// Dictionary Component - main application logic
 import React, { useState, useCallback } from "react";
 import Results from "./Results";
 import "./Dictionary.css"; // Assuming this holds global styles or specific component styles
@@ -108,7 +109,6 @@ export default function Dictionary() {
       // It's highly recommended to store API keys in environment variables
       // e.g., process.env.REACT_APP_SHECODES_API_KEY for Create React App
       const apiKey = "207446fe5b843td6o246060ad31759ff";
-      // FIX: Correctly use encodeURIComponent for the keyword and remove the accidental newline
       const apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${encodeURIComponent(
         trimmedKeyword
       )}&key=${apiKey}`;
@@ -118,68 +118,65 @@ export default function Dictionary() {
 
         if (!response.ok) {
           // If the HTTP status is not 2xx, parse the response body for more details
-          // and throw an error to be caught by the catch block.
-          // Some APIs return JSON error messages, others might just have a status.
-          const errorBody = await response.json().catch(() => ({})); // Attempt to parse JSON, gracefully handle if it fails
+          const errorBody = await response.json().catch(() => ({}));
           throw new Error(
             errorBody.message || `HTTP error! status: ${response.status}`
           );
         }
 
         const data = await response.json();
-        handleResponse({ data }); // Pass the fetched data to handleResponse
+        handleResponse({ data });
       } catch (err) {
-        // Construct a simplified error object for handleError, mimicking axios's structure for consistency
         const simplifiedError = {
           response: err.message.includes("HTTP error! status:")
             ? { status: parseInt(err.message.split(": ")[1]) }
             : null,
-          request: err.message.includes("Failed to fetch") || !navigator.onLine, // Basic check for network/fetch issues
+          request: err.message.includes("Failed to fetch") || !navigator.onLine,
           message: err.message,
           name: err.name,
         };
         handleError(simplifiedError);
       }
     },
-    [keyword, handleResponse, handleError] // Dependencies for useCallback
+    [keyword, handleResponse, handleError]
   );
 
   // handleKeywordChange: Updates the keyword state and clears errors when user types.
-  // Memoized with useCallback, depending on the current error state.
   const handleKeywordChange = useCallback(
     (event) => {
       setKeyword(event.target.value);
       if (error) {
-        // Clear the error message as the user starts typing, assuming they are correcting.
         setError(null);
       }
     },
-    [error] // Dependency on 'error' state
+    [error]
   );
 
   // clearSearch: Resets all states, effectively clearing the search interface.
-  // Memoized with useCallback as it doesn't depend on external state.
   const clearSearch = useCallback(() => {
     setKeyword("");
     setResults(null);
     setError(null);
-  }, []); // Empty dependency array
+  }, []);
 
   // handleKeyPress: Triggers search when 'Enter' key is pressed in the input field.
-  // Memoized with useCallback, depending on the 'search' function.
   const handleKeyPress = useCallback(
     (event) => {
       if (event.key === "Enter") {
         search(event);
       }
     },
-    [search] // Dependency on 'search' function
+    [search]
   );
 
   return (
     <div className="dictionary-app max-w-6xl mx-auto p-5 font-sans bg-white shadow-lg rounded-xl my-10">
       <div className="dictionary-header text-center mb-8">
         <h1 className="text-4xl font-bold text-gray-800 mb-2">📚 Dictionary</h1>
+        {/* RE-ADDED: The tagline for a more welcoming header */}
+        <p className="text-gray-600 text-lg m-0">
+          Discover comprehensive word definitions, examples, and more
+        </p>
       </div>
 
       <div className="search-section mb-8">
@@ -198,19 +195,19 @@ export default function Dictionary() {
             value={keyword}
             onChange={handleKeywordChange}
             onKeyPress={handleKeyPress}
-            disabled={loading} // Disable input while loading
+            disabled={loading}
             className={`search-input w-full p-4 text-lg border-2 rounded-lg outline-none transition-all duration-300 ${
               error
-                ? "border-red-500 bg-red-50" // Red border/background on error
+                ? "border-red-500 bg-red-50"
                 : loading
-                ? "border-blue-300 bg-blue-50" // Blue border/background while loading
-                : "border-gray-300 focus:border-blue-500 hover:border-gray-400" // Default/focus states
+                ? "border-blue-300 bg-blue-50"
+                : "border-gray-300 focus:border-blue-500 hover:border-gray-400"
             }`}
           />
           <div className="button-group flex gap-3 justify-center flex-wrap">
             <button
-              type="submit" // This button submits the form
-              disabled={loading || !keyword.trim()} // Disable if loading or keyword is empty
+              type="submit"
+              disabled={loading || !keyword.trim()}
               className="search-button px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex items-center gap-2"
             >
               {loading ? (
@@ -222,13 +219,12 @@ export default function Dictionary() {
                 <>🔍 Search</>
               )}
             </button>
-            {/* Show clear button only if there's something to clear */}
             {(keyword || results || error) && (
               <button
-                type="button" // Important: Prevents this button from submitting the form
+                type="button"
                 onClick={clearSearch}
                 className="clear-button px-6 py-3 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 disabled:bg-gray-400 transition-all duration-300 hover:shadow-lg"
-                disabled={loading} // Disable while loading
+                disabled={loading}
               >
                 🗑️ Clear
               </button>
@@ -269,6 +265,7 @@ export default function Dictionary() {
           </div>
         )}
 
+        {/* This is the key: Results component will now render whenever 'results' has data */}
         {results && <Results results={results} />}
       </div>
     </div>
