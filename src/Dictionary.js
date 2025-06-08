@@ -10,75 +10,63 @@ export default function Dictionary() {
   const [loading, setLoading] = useState(false);
 
   // handleResponse: Processes the successful API response.
-  // Memoized with useCallback as it doesn't depend on external state.
   const handleResponse = useCallback((response) => {
-    // console.log("API Response:", response.data); // Keep for debugging if needed
-
-    // Ensure the response has the expected structure (word and meanings array)
     if (
       response.data &&
       response.data.word &&
       Array.isArray(response.data.meanings)
     ) {
       setResults(response.data);
-      setError(null); // Clear any previous errors
+      setError(null);
     } else {
-      // If data is missing or malformed, inform the user
       setResults(null);
       setError("No definition found for this word. Please try another word.");
     }
     setLoading(false);
-  }, []); // Empty dependency array means this function is created once
+  }, []);
 
   // handleError: Manages displaying various API and network errors to the user.
-  // Memoized with useCallback as it doesn't depend on external state.
   const handleError = useCallback((err) => {
-    console.error("API Error:", err); // Log the full error for debugging
-    setResults(null); // Clear previous results to only show the error message
+    console.error("API Error:", err);
+    setResults(null);
 
     let errorMessage = "An unexpected error occurred. Please try again.";
 
-    // Check if the error object has a 'response' property (typical for HTTP errors)
     if (err.response) {
       switch (err.response.status) {
-        case 404: // Not Found
+        case 404:
           errorMessage =
             "Word not found. Please check your spelling and try again.";
           break;
-        case 429: // Too Many Requests
+        case 429:
           errorMessage =
             "You've made too many requests. Please wait a moment and try again.";
           break;
-        case 401: // Unauthorized (API key issue)
+        case 401:
           errorMessage = "API key error. Please verify your API configuration.";
           break;
-        default: // Other server-side errors
+        default:
           errorMessage = `Server error (${err.response.status}). Please try again later.`;
       }
     } else if (err.request) {
-      // The request was made but no response was received (e.g., network down, CORS issue)
       errorMessage =
         "No response from the server. Please check your internet connection.";
     } else if (err.name === "TypeError" && err.message === "Failed to fetch") {
-      // This often indicates a network issue or CORS on fetch API
       errorMessage =
         "Network error. Please check your internet connection and try again.";
     } else {
-      // Any other error during request setup or unexpected issues
       errorMessage = `An error occurred: ${err.message}. Please try again.`;
     }
 
-    // Always check navigator.onLine as a final network verification
     if (!navigator.onLine) {
       errorMessage = "You are offline. Please check your internet connection.";
     }
 
     setError(errorMessage);
     setLoading(false);
-  }, []); // Empty dependency array
+  }, []);
 
   // search: Initiates the API call based on the keyword.
-  // Memoized with useCallback, depending on keyword, handleResponse, and handleError.
   const search = useCallback(
     async (event) => {
       event.preventDefault(); // Prevent default form submission behavior
@@ -102,12 +90,10 @@ export default function Dictionary() {
         return;
       }
 
-      setLoading(true); // Show loading spinner
-      setError(null); // Clear previous errors
-      setResults(null); // Clear previous results
+      setLoading(true);
+      setError(null);
+      setResults(null);
 
-      // It's highly recommended to store API keys in environment variables
-      // e.g., process.env.REACT_APP_SHECODES_API_KEY for Create React App
       const apiKey = "207446fe5b843td6o246060ad31759ff";
       const apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${encodeURIComponent(
         trimmedKeyword
@@ -117,7 +103,6 @@ export default function Dictionary() {
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
-          // If the HTTP status is not 2xx, parse the response body for more details
           const errorBody = await response.json().catch(() => ({}));
           throw new Error(
             errorBody.message || `HTTP error! status: ${response.status}`
@@ -170,9 +155,11 @@ export default function Dictionary() {
   );
 
   return (
+    // Replaced Tailwind classes with custom CSS class "dictionary-app"
     <div className="dictionary-app">
       <div className="dictionary-header">
-        <h1>📚 Dictionary</h1>
+        <h1 className="dictionary-header-title">📚 Dictionary</h1>{" "}
+        {/* Added a class for h1 */}
         <p>Discover comprehensive word definitions, examples, and more</p>
       </div>
 
@@ -190,6 +177,7 @@ export default function Dictionary() {
             onChange={handleKeywordChange}
             onKeyPress={handleKeyPress}
             disabled={loading}
+            // Replaced Tailwind classes with custom CSS classes "search-input", "error", "loading"
             className={`search-input ${
               error ? "error" : loading ? "loading" : ""
             }`}
@@ -198,11 +186,12 @@ export default function Dictionary() {
             <button
               type="submit"
               disabled={loading || !keyword.trim()}
-              className="search-button"
+              className="search-button" // Used custom CSS class "search-button"
             >
               {loading ? (
                 <>
-                  <div className="loading-spinner-small"></div>
+                  <div className="loading-spinner-small"></div>{" "}
+                  {/* Used custom CSS class for spinner */}
                   Searching...
                 </>
               ) : (
@@ -213,7 +202,7 @@ export default function Dictionary() {
               <button
                 type="button"
                 onClick={clearSearch}
-                className="clear-button"
+                className="clear-button" // Used custom CSS class "clear-button"
                 disabled={loading}
               >
                 🗑️ Clear
@@ -224,26 +213,35 @@ export default function Dictionary() {
       </div>
 
       <div className="content-area">
+        {" "}
+        {/* Used custom CSS class "content-area" */}
         {loading && (
           <div className="loading-container">
-            <div className="loading-spinner"></div>
+            {" "}
+            {/* Used custom CSS class "loading-container" */}
+            <div className="loading-spinner"></div>{" "}
+            {/* Used custom CSS class "loading-spinner" */}
             <p>
               Searching for "
-              <span className="keyword-highlight">{keyword}</span>"...
+              <span className="keyword-highlight">{keyword}</span>"...{" "}
+              {/* Used custom CSS class "keyword-highlight" */}
             </p>
-            <p className="loading-subtext">This may take a few seconds</p>
+            <p className="loading-subtext">This may take a few seconds</p>{" "}
+            {/* Used custom CSS class "loading-subtext" */}
           </div>
         )}
-
         {error && (
           <div className="error-container">
-            <div className="error-icon">❌</div>
+            {" "}
+            {/* Used custom CSS class "error-container" */}
+            <div className="error-icon">❌</div>{" "}
+            {/* Used custom CSS class "error-icon" */}
             <h3>Oops! Something went wrong</h3>
-            <p className="error-message">{error}</p>
+            <p className="error-message">{error}</p>{" "}
+            {/* Used custom CSS class "error-message" */}
             <button onClick={clearSearch}>Try Again</button>
           </div>
         )}
-
         {results && <Results results={results} />}
       </div>
     </div>
