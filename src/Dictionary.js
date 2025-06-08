@@ -1,7 +1,7 @@
 // Dictionary Component - main application logic
 import React, { useState, useCallback } from "react";
 import Results from "./Results";
-import "./Dictionary.css"; // Assuming this holds global styles or specific component styles
+import "./Dictionary.css"; // CSS styles that match the wireframe design
 
 export default function Dictionary() {
   const [keyword, setKeyword] = useState("");
@@ -170,20 +170,14 @@ export default function Dictionary() {
   );
 
   return (
-    <div className="dictionary-app max-w-6xl mx-auto p-5 font-sans bg-white shadow-lg rounded-xl my-10">
-      <div className="dictionary-header text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">📚 Dictionary</h1>
-        {/* RE-ADDED: The tagline for a more welcoming header */}
-        <p className="text-gray-600 text-lg m-0">
-          Discover comprehensive word definitions, examples, and more
-        </p>
+    <div className="dictionary-app">
+      <div className="dictionary-header">
+        <h1>📚 Dictionary</h1>
+        <p>Discover comprehensive word definitions, examples, and more</p>
       </div>
 
-      <div className="search-section mb-8">
-        <form
-          onSubmit={search}
-          className="search-container flex flex-col gap-4"
-        >
+      <div className="search-section">
+        <form onSubmit={search} className="search-container">
           <label htmlFor="dictionary-search" className="sr-only">
             Search for a word
           </label>
@@ -196,23 +190,19 @@ export default function Dictionary() {
             onChange={handleKeywordChange}
             onKeyPress={handleKeyPress}
             disabled={loading}
-            className={`search-input w-full p-4 text-lg border-2 rounded-lg outline-none transition-all duration-300 ${
-              error
-                ? "border-red-500 bg-red-50"
-                : loading
-                ? "border-blue-300 bg-blue-50"
-                : "border-gray-300 focus:border-blue-500 hover:border-gray-400"
+            className={`search-input ${
+              error ? "error" : loading ? "loading" : ""
             }`}
           />
-          <div className="button-group flex gap-3 justify-center flex-wrap">
+          <div className="button-group">
             <button
               type="submit"
               disabled={loading || !keyword.trim()}
-              className="search-button px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex items-center gap-2"
+              className="search-button"
             >
               {loading ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <div className="loading-spinner-small"></div>
                   Searching...
                 </>
               ) : (
@@ -223,7 +213,7 @@ export default function Dictionary() {
               <button
                 type="button"
                 onClick={clearSearch}
-                className="clear-button px-6 py-3 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 disabled:bg-gray-400 transition-all duration-300 hover:shadow-lg"
+                className="clear-button"
                 disabled={loading}
               >
                 🗑️ Clear
@@ -233,39 +223,27 @@ export default function Dictionary() {
         </form>
       </div>
 
-      <div className="content-area min-h-[200px] flex flex-col items-center justify-center">
+      <div className="content-area">
         {loading && (
-          <div className="loading-container text-center py-12">
-            <div className="loading-spinner w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-600 text-lg">
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>
               Searching for "
-              <span className="font-semibold text-blue-600">{keyword}</span>"...
+              <span className="keyword-highlight">{keyword}</span>"...
             </p>
-            <p className="text-gray-500 text-sm mt-2">
-              This may take a few seconds
-            </p>
+            <p className="loading-subtext">This may take a few seconds</p>
           </div>
         )}
 
         {error && (
-          <div className="error-container text-center py-8 px-6 bg-red-50 border-2 border-red-200 rounded-lg mt-5 w-full max-w-md">
-            <div className="error-icon text-5xl mb-4">❌</div>
-            <h3 className="text-red-800 font-semibold text-lg mb-2">
-              Oops! Something went wrong
-            </h3>
-            <p className="error-message text-red-700 m-0 text-base leading-relaxed">
-              {error}
-            </p>
-            <button
-              onClick={clearSearch}
-              className="mt-4 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors duration-300"
-            >
-              Try Again
-            </button>
+          <div className="error-container">
+            <div className="error-icon">❌</div>
+            <h3>Oops! Something went wrong</h3>
+            <p className="error-message">{error}</p>
+            <button onClick={clearSearch}>Try Again</button>
           </div>
         )}
 
-        {/* This is the key: Results component will now render whenever 'results' has data */}
         {results && <Results results={results} />}
       </div>
     </div>
