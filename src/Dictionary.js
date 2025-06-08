@@ -180,9 +180,6 @@ export default function Dictionary() {
     <div className="dictionary-app max-w-6xl mx-auto p-5 font-sans bg-white shadow-lg rounded-xl my-10">
       <div className="dictionary-header text-center mb-8">
         <h1 className="text-4xl font-bold text-gray-800 mb-2">📚 Dictionary</h1>
-        <p className="text-gray-600 text-lg m-0">
-          Discover comprehensive word definitions, examples, and more
-        </p>
       </div>
 
       <div className="search-section mb-8">
