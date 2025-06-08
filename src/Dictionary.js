@@ -1,51 +1,25 @@
 // App.js
 import React, { useState } from "react";
 import axios from "axios";
-import Results from "./Results";
 import "./Dictionary.css";
 
 export default function Dictionary() {
   const [keyword, setKeyword] = useState("");
-  const [results, setResults] = useState({
-    keyword: "",
-    phonetic: "",
-    meanings: [],
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  function handleSearch(event) {
+  function handleResponse(response) {
+    console.log(response.data[0]);
+  }
+
+  function search(event) {
     event.preventDefault();
-
-    if (!keyword.trim()) return;
-
-    setLoading(true);
-    setError(null);
 
     const apiKey = "207446fe5b843td6o246060ad31759ff";
     const apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${keyword}&key=${apiKey}`;
 
-    axios
-      .get(apiUrl)
-      .then((response) => {
-        if (response.data && response.data.word) {
-          setResults(response.data);
-        } else {
-          setResults(null);
-          setError("No definitions found.");
-        }
-      })
-      .catch(() => {
-        setError("An error occurred. Please try again.");
-        setResults(null);
-      })
-      .finally(() => setLoading(false));
+    axios.get(apiUrl).then(handleResponse);
   }
-
-  function handleClear() {
-    setKeyword("");
-    setResults(null);
-    setError(null);
+  function handleKeywordChange(event) {
+    setKeyword(event.target.value);
   }
 
   return (
@@ -56,52 +30,13 @@ export default function Dictionary() {
       </div>
 
       <div className="search-section">
-        <form className="search-container" onSubmit={handleSearch}>
+        <form className="search-container" onSubmit={search}>
           <input
-            type="text"
-            className={`search-input ${error ? "error" : ""}`}
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
+            type="search"
+            onChange={handleKeywordChange}
             placeholder="Type a word..."
           />
-          <div className="button-group">
-            <button type="submit" className="search-button" disabled={loading}>
-              {loading ? <div className="loading-spinner-small" /> : "Search"}
-            </button>
-            {results && (
-              <button
-                type="button"
-                className="clear-button"
-                onClick={handleClear}
-              >
-                Clear
-              </button>
-            )}
-          </div>
         </form>
-      </div>
-
-      <div className="content-area">
-        {loading && (
-          <div className="loading-container">
-            <div className="loading-spinner" />
-            <p className="loading-subtext">
-              Searching for:{" "}
-              <span className="keyword-highlight">{keyword}</span>
-            </p>
-          </div>
-        )}
-
-        {error && (
-          <div className="error-container">
-            <div className="error-icon">⚠️</div>
-            <h3>Oops!</h3>
-            <p className="error-message">{error}</p>
-            <button onClick={handleClear}>Try Again</button>
-          </div>
-        )}
-
-        {results && <Results results={results} />}
       </div>
     </div>
   );
