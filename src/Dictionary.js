@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from "react";
-import axios from "axios";
 import Results from "./Results";
 import "./Dictionary.css"; // Assuming this holds global styles or specific component styles
 
