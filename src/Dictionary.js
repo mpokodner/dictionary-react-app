@@ -11,6 +11,7 @@ export default function Dictionary(props) {
   const [loaded, setLoaded] = useState(false);
 
   function handleDictionaryResponse(response) {
+    console.log(response.data);
     setResults(response.data[0]);
   }
 
@@ -57,7 +58,7 @@ export default function Dictionary(props) {
             />
           </form>
         </section>
-        <Results results={results} />
+        <Results handleDictionaryResponse={results} />
         <Photos photos={photos} />
       </div>
     );

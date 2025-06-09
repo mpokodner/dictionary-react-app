@@ -3,7 +3,8 @@ import Phonetic from "./PhoneticTranscription";
 import Meaning from "./Meaning";
 
 export default function Results(props) {
-  const { results } = props; // Destructure results for cleaner code
+  console.log(props);
+  const { results } = props;
 
   if (!results) {
     return null; // Early return if there are no results
