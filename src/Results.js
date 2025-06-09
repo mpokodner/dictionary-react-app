@@ -1,6 +1,8 @@
 import React from "react";
 
 function Results({ results, loading, keyword }) {
+  const result = Array.isArray(results) ? results[0] : results;
+
   if (loading) {
     return (
       <div className="bg-white rounded-lg shadow-md p-6 text-center">
@@ -13,25 +15,25 @@ function Results({ results, loading, keyword }) {
     );
   }
 
-  if (!results) {
+  if (!result) {
     return null;
   }
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <h3 className="text-2xl font-bold text-gray-800 mb-4 capitalize">
-        {results.word || keyword}
+        {result.word || keyword}
       </h3>
 
-      {results.phonetic && (
+      {result.phonetic && (
         <p className="text-gray-600 mb-4 text-lg">
-          <span className="font-medium">Pronunciation:</span> {results.phonetic}
+          <span className="font-medium">Pronunciation:</span> {result.phonetic}
         </p>
       )}
 
-      {results.meanings && results.meanings.length > 0 && (
+      {result.meanings && result.meanings.length > 0 && (
         <div className="space-y-4">
-          {results.meanings.map((meaning, index) => (
+          {result.meanings.map((meaning, index) => (
             <div key={index} className="border-l-4 border-blue-500 pl-4">
               <h4 className="font-semibold text-gray-800 mb-2 capitalize">
                 {meaning.partOfSpeech}
@@ -68,12 +70,13 @@ function Results({ results, loading, keyword }) {
         </div>
       )}
 
-      {results.definition && !results.meanings && (
+      {result.definition && !result.meanings && (
         <div className="border-l-4 border-blue-500 pl-4">
-          <p className="text-gray-700">{results.definition}</p>
+          <p className="text-gray-700">{result.definition}</p>
         </div>
       )}
     </div>
   );
 }
+
 export default Results;
