@@ -11,11 +11,8 @@ function Meaning(props) {
         {props.meaning.definitions.map((definition, index) => {
           return (
             <div key={index}>
-              <p>
-                {definition.definition}
-                <br />
-                <em>{definition.example}</em>
-              </p>
+              <div className="definition-item">{definition.definition}</div>
+              <div className="definition-example">{definition.example}</div>
             </div>
           );
         })}
