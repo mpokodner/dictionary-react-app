@@ -17,7 +17,7 @@ function Results({ results }) {
 
       {results.meanings &&
         results.meanings.map((meaning, idx) => {
-          const firstDef = meaning.definitions?.[0];
+          const firstDef = meaning.definitions.definition[0];
 
           if (!firstDef) return null;
 
