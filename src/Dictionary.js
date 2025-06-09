@@ -105,7 +105,7 @@ function Dictionary(props) {
         )}
       </section>
 
-      <Results results={results} loading={loading} keyword={keyword} />
+      <Results results={results} />
     </div>
   );
 }
