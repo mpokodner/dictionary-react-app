@@ -1,12 +1,12 @@
 import React from "react";
 
-export default function PhoneticTranscription(props) {
+export default function PhoneticTranscription({ phonetic }) {
   return (
-    <div className="PhoneticTrasncription">
-      <a href={props.phonetic.audio} target="_blank" rel="noreferrer">
+    <div className="PhoneticTranscription">
+      <a href={phonetic.audio} target="_blank" rel="noreferrer">
         Listen
       </a>
-      <span className="text">{props.phonetic.text}</span>
+      <span className="text">{phonetic.text}</span>
     </div>
   );
 }

@@ -1,30 +1,30 @@
-// Results.js
 import React from "react";
+import Phonetic from "./Phonetic";
 import Meaning from "./Meaning";
-import PhoneticTranscription from "./PhoneticTranscription";
+import "./Results.css";
 
 export default function Results(props) {
-  if (props.results) {
-    return (
-      <div className="Results">
-        <h2>{props.results.word}</h2>
-        {props.results.phonetics.map(function (phonetic, index) {
-          return (
-            <div key={index}>
-              <PhoneticTranscription phonetic={phonetic} />
-            </div>
-          );
-        })}
-        {props.results.meanings.map(function (meaning, index) {
-          return (
-            <section key={index}>
-              <Meaning meaning={meaning} />
-            </section>
-          );
-        })}
-      </div>
-    );
-  } else {
-    return null;
+  const { results } = props; // Destructure results for cleaner code
+
+  if (!results) {
+    return null; // Early return if there are no results
   }
+
+  return (
+    <div className="Results">
+      <section>
+        <h2>{results.word}</h2>
+        {results.phonetics.map((phonetic, index) => (
+          <div key={index}>
+            <Phonetic phonetic={phonetic} />
+          </div>
+        ))}
+      </section>
+      {results.meanings.map((meaning, index) => (
+        <section key={index}>
+          <Meaning meaning={meaning} />
+        </section>
+      ))}
+    </div>
+  );
 }

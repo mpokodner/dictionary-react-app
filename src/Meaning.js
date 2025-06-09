@@ -1,21 +1,27 @@
 import React from "react";
-// Note: All styles are handled by Dictionary.css - no separate CSS import needed
 
 function Meaning(props) {
-  console.log(props.meaning);
+  const { meaning } = props;
+
+  // Check if meaning exists before continuing
+  if (!meaning) {
+    return <div className="Meaning">Meaning not available.</div>;
+  }
+
+  console.log(meaning);
 
   return (
     <div className="Meaning">
-      <h3>{props.meaning.partOfSpeech}</h3>
+      <h3>{meaning?.partOfSpeech || "Part of Speech not available"}</h3>
       <div className="definitions-grid">
-        {props.meaning.definitions.map((definition, index) => {
-          return (
-            <div key={index}>
-              <div className="definition-item">{definition.definition}</div>
-              <div className="definition-example">{definition.example}</div>
+        {meaning.definitions.map((definition) => (
+          <div key={definition.id || definition.definition}>
+            <div className="definition-item">{definition.definition}</div>
+            <div className="definition-example">
+              {definition.example || "No example available."}
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </div>
   );
