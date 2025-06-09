@@ -1,7 +1,6 @@
 import React from "react";
 import Phonetic from "./Phonetic";
 import Meaning from "./Meaning";
-import "./Results.css";
 
 export default function Results(props) {
   const { results } = props; // Destructure results for cleaner code
