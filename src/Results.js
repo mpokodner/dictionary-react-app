@@ -9,37 +9,51 @@ function Results({ results }) {
         {results.word}
       </h3>
 
+      {results.phonetic && (
+        <p className="text-gray-600 mb-4 text-lg">
+          <span className="font-medium">Pronunciation:</span> {results.phonetic}
+        </p>
+      )}
+
       {results.meanings &&
-        results.meanings.map((meaning, idx) => (
-          <div key={idx} className="mb-4">
-            <p className="text-gray-700 mb-1">
-              <span className="font-medium">Definition:</span>{" "}
-              {meaning.definitions[0]?.definition}
-            </p>
+        results.meanings.map((meaning, idx) => {
+          const firstDef = meaning.definitions?.[0];
 
-            {meaning.definitions[0]?.example && (
-              <p className="text-gray-600 italic text-sm">
-                Example: "{meaning.definitions[0].example}"
+          if (!firstDef) return null;
+
+          return (
+            <div key={idx} className="mb-6">
+              <h4 className="text-lg font-semibold text-gray-800 mb-2 capitalize">
+                {meaning.partOfSpeech}
+              </h4>
+
+              <p className="text-gray-700 mb-2">
+                <span className="font-medium">Definition:</span>{" "}
+                {firstDef.definition}
               </p>
-            )}
 
-            {meaning.definitions[0]?.synonyms &&
-              meaning.definitions[0].synonyms.length > 0 && (
+              {firstDef.example && (
+                <p className="text-gray-600 italic text-sm">
+                  Example: "{firstDef.example}"
+                </p>
+              )}
+
+              {firstDef.synonyms && firstDef.synonyms.length > 0 && (
                 <p className="text-sm text-gray-600">
                   <span className="font-medium">Synonyms:</span>{" "}
-                  {meaning.definitions[0].synonyms.join(", ")}
+                  {firstDef.synonyms.join(", ")}
                 </p>
               )}
 
-            {meaning.definitions[0]?.antonyms &&
-              meaning.definitions[0].antonyms.length > 0 && (
+              {firstDef.antonyms && firstDef.antonyms.length > 0 && (
                 <p className="text-sm text-gray-600">
                   <span className="font-medium">Antonyms:</span>{" "}
-                  {meaning.definitions[0].antonyms.join(", ")}
+                  {firstDef.antonyms.join(", ")}
                 </p>
               )}
-          </div>
-        ))}
+            </div>
+          );
+        })}
     </div>
   );
 }
