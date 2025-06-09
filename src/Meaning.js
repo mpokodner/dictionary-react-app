@@ -1,20 +1,18 @@
 import React from "react";
 
 function Meaning(props) {
-  const { meaning } = props;
+  const { definition } = props;
 
   // Check if meaning exists before continuing
-  if (!meaning) {
+  if (!definition) {
     return <div className="Meaning">Meaning not available.</div>;
   }
 
-  console.log(meaning);
-
   return (
     <div className="Meaning">
-      <h3>{meaning?.partOfSpeech || "Part of Speech not available"}</h3>
+      <h3>{definition.partOfSpeech || "Part of Speech not available"}</h3>
       <div className="definitions-grid">
-        {meaning.definitions.map((definition) => (
+        {definition.definitions.map((definition) => (
           <div key={definition.id || definition.definition}>
             <div className="definition-item">{definition.definition}</div>
             <div className="definition-example">
