@@ -9,48 +9,37 @@ function Results({ results }) {
         {results.word}
       </h3>
 
-      {results.phonetic && (
-        <p className="text-gray-600 mb-2">
-          <span className="font-medium">Pronunciation:</span> {results.phonetic}
-        </p>
-      )}
+      {results.meanings &&
+        results.meanings.map((meaning, idx) => (
+          <div key={idx} className="mb-4">
+            <p className="text-gray-700 mb-1">
+              <span className="font-medium">Definition:</span>{" "}
+              {meaning.definitions[0]?.definition}
+            </p>
 
-      {results.meanings && results.meanings.length > 0 && (
-        <div className="space-y-4">
-          {results.meanings.slice(0, 3).map((meaning, index) => (
-            <div key={index} className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold text-gray-800 capitalize mb-1">
-                {meaning.partOfSpeech}
-              </h4>
-
-              <p className="text-gray-700 mb-1">
-                <span className="font-medium">Definition:</span>{" "}
-                {meaning.definition}
+            {meaning.definitions[0]?.example && (
+              <p className="text-gray-600 italic text-sm">
+                Example: "{meaning.definitions[0].example}"
               </p>
+            )}
 
-              {meaning.example && (
-                <p className="text-gray-600 italic text-sm">
-                  Example: "{meaning.example}"
-                </p>
-              )}
-
-              {meaning.synonyms && meaning.synonyms.length > 0 && (
+            {meaning.definitions[0]?.synonyms &&
+              meaning.definitions[0].synonyms.length > 0 && (
                 <p className="text-sm text-gray-600">
                   <span className="font-medium">Synonyms:</span>{" "}
-                  {meaning.synonyms.slice(0, 5).join(", ")}
+                  {meaning.definitions[0].synonyms.join(", ")}
                 </p>
               )}
 
-              {meaning.antonyms && meaning.antonyms.length > 0 && (
+            {meaning.definitions[0]?.antonyms &&
+              meaning.definitions[0].antonyms.length > 0 && (
                 <p className="text-sm text-gray-600">
                   <span className="font-medium">Antonyms:</span>{" "}
-                  {meaning.antonyms.slice(0, 5).join(", ")}
+                  {meaning.definitions[0].antonyms.join(", ")}
                 </p>
               )}
-            </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
     </div>
   );
 }
