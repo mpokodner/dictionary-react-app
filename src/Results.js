@@ -21,9 +21,15 @@ function Results({ results }) {
         </h2>
 
         <div className="mt-4">
-          <a href={results.phonetic.audio} target="_blank" rel="noreferrer">
-            Listen
-          </a>
+          {results.phonetic?.audio && (
+            <a
+              href={results.phonetic[0].audio}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Listen
+            </a>
+          )}
           {results.phonetic && (
             <p className="text-soft-gray mb-4">
               <strong style={{ lineHeight: "1.5", fontSize: "1.2rem" }}>
