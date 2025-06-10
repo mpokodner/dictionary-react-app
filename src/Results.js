@@ -21,23 +21,23 @@ function Results({ results }) {
         </h2>
 
         <div className="mt-4">
-          {results.phonetic?.audio && (
+          {results.phonetics && results.phonetics[0]?.audio && (
             <a
-              href={results.phonetic[0].audio}
+              href={results.phonetics[0].audio}
               target="_blank"
               rel="noreferrer"
             >
-              Listen
+              🔊 Listen
             </a>
           )}
-          {results.phonetic && (
+          {results.phonetics && results.phonetics[0]?.text && (
             <p className="text-soft-gray mb-4">
               <strong style={{ lineHeight: "1.5", fontSize: "1.2rem" }}>
                 Pronunciation:{" "}
               </strong>{" "}
-              {results.phonetic}
+              {results.phonetics[0].text}
             </p>
-          )}{" "}
+          )}
         </div>
 
         {Object.entries(groupedMeanings).map(
