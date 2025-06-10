@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Results from "./Results";
 import "./Dictionary.css";
+import Photos from "./Photos";
 
 function Dictionary({ defaultKeyword = "" }) {
   const [keyword, setKeyword] = useState(defaultKeyword);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [photos, setPhotos] = useState(null);
 
   function handleDictionaryResponse(response) {
     console.log(response.data);
@@ -17,6 +19,9 @@ function Dictionary({ defaultKeyword = "" }) {
       setResults(null);
       setError("No definition found for this word.");
     }
+  }
+  function handlePexelsResponse(response) {
+    setPhotos(response.data.photos);
   }
 
   function handleError(error) {
@@ -34,20 +39,29 @@ function Dictionary({ defaultKeyword = "" }) {
     setLoading(true);
     setError(null);
     setResults(null);
-
-    const apiKey = "207446fe5b843td6o246060ad31759ff";
-    const apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${searchKeyword}&key=${apiKey}`;
+    setPhotos(null);
 
     try {
+      // Dictionary API call
+      const apiKey = "207446fe5b843td6o246060ad31759ff";
+      const apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${searchKeyword}&key=${apiKey}`;
       const response = await axios.get(apiUrl);
       handleDictionaryResponse(response);
+
+      // Pexels API call - Fixed with Bearer token
+      const pexelsApiKey =
+        "563492ad6f91700001000001fdd29f0808df42bd90c33f42e128fa89";
+      const pexelsApiUrl = `https://api.pexels.com/v1/search?query=${searchKeyword}&per_page=9`;
+      const headers = { Authorization: `Bearer ${pexelsApiKey}` };
+
+      const pexelsResponse = await axios.get(pexelsApiUrl, { headers });
+      handlePexelsResponse(pexelsResponse);
     } catch (err) {
       handleError(err);
     } finally {
       setLoading(false);
     }
   }, []);
-
   function handleSubmit(event) {
     event.preventDefault();
     search(keyword);
@@ -98,6 +112,7 @@ function Dictionary({ defaultKeyword = "" }) {
       </section>
 
       <Results results={results} />
+      <Photos photos={photos} />
     </div>
   );
 }
