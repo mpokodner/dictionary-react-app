@@ -16,44 +16,38 @@ function Results({ results }) {
       )}
 
       {results.meanings &&
-        results.meanings.map((meaning, idx) => {
-          const firstDef = meaning.definitions.definition[0];
+        results.meanings.map((meaning, idx) => (
+          <div key={idx} className="mb-6">
+            <h4 className="text-lg font-semibold text-gray-800 mb-2 capitalize">
+              {meaning.partOfSpeech}
+            </h4>
 
-          if (!firstDef) return null;
+            <p className="text-gray-700 mb-2">
+              <span className="font-medium">Definition:</span>{" "}
+              {meaning.definition}
+            </p>
 
-          return (
-            <div key={idx} className="mb-6">
-              <h4 className="text-lg font-semibold text-gray-800 mb-2 capitalize">
-                {meaning.partOfSpeech}
-              </h4>
-
-              <p className="text-gray-700 mb-2">
-                <span className="font-medium">Definition:</span>{" "}
-                {firstDef.definition}
+            {meaning.example && (
+              <p className="text-gray-600 italic text-sm">
+                Example: "{meaning.example}"
               </p>
+            )}
 
-              {firstDef.example && (
-                <p className="text-gray-600 italic text-sm">
-                  Example: "{firstDef.example}"
-                </p>
-              )}
+            {meaning.synonyms && meaning.synonyms.length > 0 && (
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Synonyms:</span>{" "}
+                {meaning.synonyms.join(", ")}
+              </p>
+            )}
 
-              {firstDef.synonyms && firstDef.synonyms.length > 0 && (
-                <p className="text-sm text-gray-600">
-                  <span className="font-medium">Synonyms:</span>{" "}
-                  {firstDef.synonyms.join(", ")}
-                </p>
-              )}
-
-              {firstDef.antonyms && firstDef.antonyms.length > 0 && (
-                <p className="text-sm text-gray-600">
-                  <span className="font-medium">Antonyms:</span>{" "}
-                  {firstDef.antonyms.join(", ")}
-                </p>
-              )}
-            </div>
-          );
-        })}
+            {meaning.antonyms && meaning.antonyms.length > 0 && (
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Antonyms:</span>{" "}
+                {meaning.antonyms.join(", ")}
+              </p>
+            )}
+          </div>
+        ))}
     </div>
   );
 }
