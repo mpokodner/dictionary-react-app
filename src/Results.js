@@ -14,8 +14,8 @@ function Results({ results }) {
   }, {});
 
   //const for phonetics
-  const audioPhonetic = results.phonetic?.find((p) => p.audio);
-  const textPhonetic = results.phonetic?.find((p) => p.text);
+  const audioPhonetic = results.phonetics?.find((p) => p.audio);
+  const textPhonetic = results.phonetics?.find((p) => p.text);
 
   return (
     <div className="container my-4">
@@ -47,39 +47,44 @@ function Results({ results }) {
                 {partOfSpeech}
               </h4>
               <div className="row g-3">
-                {meanings.map((meaning, index) => (
-                  <div key={index} className="col-md-6 col-lg-4">
-                    <div className="card h-100 bg-white custom-border shadow-sm">
-                      <div className="card-body">
-                        <p className="card-text text-dark-gray mb-2">
-                          <strong style={{ color: "#006400" }}>
-                            Definition:{" "}
-                          </strong>{" "}
-                          {meaning.definition}
-                        </p>
-                        {meaning.example && (
-                          <p className="text-soft-gray fst-italic mb-2">
-                            Example: "{meaning.example}"
+                {meanings.map((meaning, index) =>
+                  meaning.definitions.map((definition, defIndex) => (
+                    <div
+                      key={`${index}-${defIndex}`}
+                      className="col-md-6 col-lg-4"
+                    >
+                      <div className="card h-100 bg-white custom-border shadow-sm">
+                        <div className="card-body">
+                          <p className="card-text text-dark-gray mb-2">
+                            <strong style={{ color: "#006400" }}>
+                              Definition:{" "}
+                            </strong>{" "}
+                            {definition.definition}
                           </p>
-                        )}
+                          {definition.example && (
+                            <p className="text-soft-gray fst-italic mb-2">
+                              Example: "{definition.example}"
+                            </p>
+                          )}
 
-                        {meaning.synonyms?.length > 0 && (
-                          <p className="text-soft-gray">
-                            <strong>Synonyms:</strong>{" "}
-                            {meaning.synonyms.join(", ")}
-                          </p>
-                        )}
+                          {definition.synonyms?.length > 0 && (
+                            <p className="text-soft-gray">
+                              <strong>Synonyms:</strong>{" "}
+                              {definition.synonyms.join(", ")}
+                            </p>
+                          )}
 
-                        {meaning.antonyms?.length > 0 && (
-                          <p className="text-soft-gray">
-                            <strong>Antonyms:</strong>{" "}
-                            {meaning.antonyms.join(", ")}
-                          </p>
-                        )}
+                          {definition.antonyms?.length > 0 && (
+                            <p className="text-soft-gray">
+                              <strong>Antonyms:</strong>{" "}
+                              {definition.antonyms.join(", ")}
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
           )
