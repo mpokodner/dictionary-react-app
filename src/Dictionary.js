@@ -7,21 +7,27 @@ import Photos from "./Photos";
 function Dictionary({ defaultKeyword = "" }) {
   const [keyword, setKeyword] = useState(defaultKeyword);
   const [results, setResults] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [photos, setPhotos] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   function handleDictionaryResponse(response) {
-    console.log(response.data);
-    if (response.data && response.data.word) {
+    console.log("Dictionary API response:", response.data);
+    if (response.data && response.data.meanings?.length > 0) {
       setResults(response.data);
     } else {
       setResults(null);
       setError("No definition found for this word.");
     }
   }
-  function handlePexelsResponse(response) {
-    setPhotos(response.data.photos);
+
+  function handleImageResponse(response) {
+    console.log("Image API response:", response.data.photos);
+    if (response.data && response.data.photos?.length > 0) {
+      setPhotos(response.data.photos);
+    } else {
+      setPhotos([]);
+    }
   }
 
   function handleError(error) {
@@ -44,24 +50,21 @@ function Dictionary({ defaultKeyword = "" }) {
     try {
       // Dictionary API call
       const apiKey = "207446fe5b843td6o246060ad31759ff";
-      const apiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${searchKeyword}&key=${apiKey}`;
-      const response = await axios.get(apiUrl);
+      const dictionaryApiUrl = `https://api.shecodes.io/dictionary/v1/define?word=${searchKeyword}&key=${apiKey}`;
+      const response = await axios.get(dictionaryApiUrl);
       handleDictionaryResponse(response);
 
-      // Pexels API call - Fixed with Bearer token
-      const pexelsApiKey =
-        "563492ad6f91700001000001fdd29f0808df42bd90c33f42e128fa89";
-      const pexelsApiUrl = `https://api.pexels.com/v1/search?query=${searchKeyword}&per_page=9`;
-      const headers = { Authorization: `Bearer ${pexelsApiKey}` };
-
-      const pexelsResponse = await axios.get(pexelsApiUrl, { headers });
-      handlePexelsResponse(pexelsResponse);
+      // SheCodes image API call (not Pexels!)
+      const imageApiUrl = `https://api.shecodes.io/images/v1/search?query=${searchKeyword}&key=${apiKey}`;
+      const imageResponse = await axios.get(imageApiUrl);
+      handleImageResponse(imageResponse);
     } catch (err) {
       handleError(err);
     } finally {
       setLoading(false);
     }
   }, []);
+
   function handleSubmit(event) {
     event.preventDefault();
     search(keyword);
@@ -76,6 +79,7 @@ function Dictionary({ defaultKeyword = "" }) {
     if (defaultKeyword) {
       search(defaultKeyword);
     }
+    // eslint-disable-next-line
   }, [defaultKeyword, search]);
 
   return (
@@ -111,8 +115,8 @@ function Dictionary({ defaultKeyword = "" }) {
         )}
       </section>
 
-      <Results results={results} />
-      <Photos photos={photos} />
+      {results && <Results results={results} />}
+      {photos && <Photos photos={photos} />}
     </div>
   );
 }
