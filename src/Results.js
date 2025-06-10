@@ -3,58 +3,67 @@ import React from "react";
 function Results({ results }) {
   if (!results) return null;
 
+  //tried to group by part of speech
+  const groupedMeanings = results.meanings.reduce((acc, meaning) => {
+    if (!acc[meaning.partOfSpeech]) {
+      acc[meaning.partOfSpeech] = [];
+    }
+    acc[meaning.partOfSpeech].push(meaning);
+    return acc;
+  }, {});
+
   return (
     <div className="container my-4">
-      <div
-        className="card border-0 shadow-sm"
-        style={{ backgroundColor: "#f5f5dc" }}
-      >
-        <div className="card-body">
-          <h3 className="card-title text-success text-capitalize mb-3">
-            {results.word}
-          </h3>
+      <div className="results-wrapper p-4 rounded">
+        <h2 className="text-dark-gray text-capitalize mb-4">{results.word} </h2>
 
-          {results.phonetic && (
-            <p className="text-muted mb-4">
-              <strong>Pronunciation:</strong> {results.phonetic}
-            </p>
-          )}
+        {results.phonetic && (
+          <p className="text-soft-gray mb-4">
+            <strong>Pronunciation: </strong> {results.phonetic}
+          </p>
+        )}
 
-          {results.meanings &&
-            results.meanings.map((meaning, idx) => (
-              <div
-                key={idx}
-                className="mb-4 p-3 border-start border-3"
-                style={{ borderColor: "#6c757d" }}
-              >
-                <h5 className="text-secondary text-capitalize mb-2">
-                  {meaning.partOfSpeech}
-                </h5>
+        {Object.entries(groupedMeanings).map(
+          ([partOfSpeech, meanings], idx) => (
+            <div key={idx} className="mb-4">
+              <h4 className="text-dark-gray mb-3 text-capitalize">
+                {partOfSpeech}
+              </h4>
+              <div className="row g-3">
+                {meanings.map((meaning, index) => (
+                  <div key={index} className="col-md-6 col-lg-4">
+                    <div className="card h-100 bg-subtle-beige border-0 shadow-sm">
+                      <div className="card-body">
+                        <p className="card-text text-dark-gray mb-2">
+                          <strong>Definition: </strong> {meaning.definition}
+                        </p>
+                        {meaning.example && (
+                          <p className="text-soft-gray fst-italic mb-2">
+                            Example: "{meaning.example}"
+                          </p>
+                        )}
 
-                <p className="mb-2 text-dark">
-                  <strong>Definition:</strong> {meaning.definition}
-                </p>
+                        {meaning.synonyms?.length > 0 && (
+                          <p className="text-soft-gray">
+                            <strong>Synonyms:</strong>{" "}
+                            {meaning.synonyms.join(", ")}
+                          </p>
+                        )}
 
-                {meaning.example && (
-                  <p className="fst-italic text-muted mb-2">
-                    Example: "{meaning.example}"
-                  </p>
-                )}
-
-                {meaning.synonyms && meaning.synonyms.length > 0 && (
-                  <p className="text-muted mb-1">
-                    <strong>Synonyms:</strong> {meaning.synonyms.join(", ")}
-                  </p>
-                )}
-
-                {meaning.antonyms && meaning.antonyms.length > 0 && (
-                  <p className="text-muted">
-                    <strong>Antonyms:</strong> {meaning.antonyms.join(", ")}
-                  </p>
-                )}
+                        {meaning.antonyms?.length > 0 && (
+                          <p className="text-soft-gray">
+                            <strong>Antonyms:</strong>{" "}
+                            {meaning.antonyms.join(", ")}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-        </div>
+            </div>
+          )
+        )}
       </div>
     </div>
   );
