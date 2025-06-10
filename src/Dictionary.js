@@ -68,7 +68,7 @@ function Dictionary({ defaultKeyword = "" }) {
     <div className="max-w-2xl mx-auto">
       <section className="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          What word do you want to look up?
+          WebHive Optimize Dictionary
         </h2>
         <form onSubmit={handleSubmit} className="mb-4">
           <div className="flex gap-2">

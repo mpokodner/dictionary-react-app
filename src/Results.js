@@ -35,7 +35,7 @@ function Results({ results }) {
               <div className="row g-3">
                 {meanings.map((meaning, index) => (
                   <div key={index} className="col-md-6 col-lg-4">
-                    <div className="card h-100 bg-subtle-beige border-0 shadow-sm">
+                    <div className="card h-100 bg-white custom-border shadow-sm">
                       <div className="card-body">
                         <p className="card-text text-dark-gray mb-2">
                           <strong>Definition: </strong> {meaning.definition}
