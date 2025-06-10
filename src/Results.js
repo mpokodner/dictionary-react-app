@@ -20,11 +20,19 @@ function Results({ results }) {
           {results.word}{" "}
         </h2>
 
-        {results.phonetic && (
-          <p className="text-soft-gray mb-4">
-            <strong>Pronunciation: </strong> {results.phonetic}
-          </p>
-        )}
+        <div className="mt-4">
+          <a href={results.phonetic.audio} target="_blank" rel="noreferrer">
+            Listen
+          </a>
+          {results.phonetic && (
+            <p className="text-soft-gray mb-4">
+              <strong style={{ lineHeight: "1.5", fontSize: "1.2rem" }}>
+                Pronunciation:{" "}
+              </strong>{" "}
+              {results.phonetic}
+            </p>
+          )}{" "}
+        </div>
 
         {Object.entries(groupedMeanings).map(
           ([partOfSpeech, meanings], idx) => (
@@ -38,7 +46,10 @@ function Results({ results }) {
                     <div className="card h-100 bg-white custom-border shadow-sm">
                       <div className="card-body">
                         <p className="card-text text-dark-gray mb-2">
-                          <strong>Definition: </strong> {meaning.definition}
+                          <strong style={{ color: "#006400" }}>
+                            Definition:{" "}
+                          </strong>{" "}
+                          {meaning.definition}
                         </p>
                         {meaning.example && (
                           <p className="text-soft-gray fst-italic mb-2">
