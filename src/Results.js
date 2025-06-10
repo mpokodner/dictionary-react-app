@@ -13,6 +13,10 @@ function Results({ results }) {
     return acc;
   }, {});
 
+  //const for phonetics
+  const audioPhonetic = results.phonetic?.find((p) => p.audio);
+  const textPhonetic = results.phonetic?.find((p) => p.text);
+
   return (
     <div className="container my-4">
       <div className="results-wrapper p-4 rounded">
@@ -21,21 +25,17 @@ function Results({ results }) {
         </h2>
 
         <div className="mt-4">
-          {results.phonetics && results.phonetics[0]?.audio && (
-            <a
-              href={results.phonetics[0].audio}
-              target="_blank"
-              rel="noreferrer"
-            >
+          {audioPhonetic && (
+            <a href={audioPhonetic.audio} target="_blank" rel="noreferrer">
               🔊 Listen
             </a>
           )}
-          {results.phonetics && results.phonetics[0]?.text && (
+          {textPhonetic && (
             <p className="text-soft-gray mb-4">
               <strong style={{ lineHeight: "1.5", fontSize: "1.2rem" }}>
                 Pronunciation:{" "}
               </strong>{" "}
-              {results.phonetics[0].text}
+              {textPhonetic.text}
             </p>
           )}
         </div>
