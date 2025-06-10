@@ -1,0 +1,27 @@
+/* Color palette */
+.results-wrapper {
+  background-color: #fafaf9; /* Off White background for the section */
+}
+
+.bg-subtle-beige {
+  background-color: #f5f2e8 !important;
+}
+
+.text-dark-gray {
+  color: #374151 !important; /* Headings, primary text */
+}
+
+.text-soft-gray {
+  color: #6b7280 !important; /* Secondary text */
+}
+
+/* Responsive text scaling and padding tweaks if needed */
+@media (max-width: 576px) {
+  .card-body {
+    padding: 1rem;
+  }
+
+  .card-text {
+    font-size: 0.95rem;
+  }
+}

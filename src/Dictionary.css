@@ -4,13 +4,6 @@
   margin: 0;
   padding: 0;
 }
-.bg-beige {
-  background-color: #f5f5dc !important;
-}
-
-.border-gray {
-  border-color: #6c757d !important;
-}
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

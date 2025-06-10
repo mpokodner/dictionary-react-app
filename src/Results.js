@@ -1,4 +1,5 @@
 import React from "react";
+import "./Results.css";
 
 function Results({ results }) {
   if (!results) return null;
