@@ -16,7 +16,9 @@ function Results({ results }) {
   return (
     <div className="container my-4">
       <div className="results-wrapper p-4 rounded">
-        <h2 className="text-dark-gray text-capitalize mb-4">{results.word} </h2>
+        <h2 className="searched-word text-white bg-bold-green text-capitalize px-3 py-2 rounded d-inline-block">
+          {results.word}{" "}
+        </h2>
 
         {results.phonetic && (
           <p className="text-soft-gray mb-4">

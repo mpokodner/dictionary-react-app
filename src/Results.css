@@ -4,7 +4,7 @@
 }
 
 .bg-subtle-beige {
-  background-color: #f5f2e8 !important;
+  background-color: #f0ebd8 !important;
 }
 
 .text-dark-gray {
@@ -12,7 +12,27 @@
 }
 
 .text-soft-gray {
-  color: #6b7280 !important; /* Secondary text */
+  color: #74523b !important; /* Secondary text */
+}
+.bg-bold-green {
+  background-color: #7f867b !important;
+  border-color: #2d7d32;
+}
+.btn-bold-green {
+  background-color: #7f867b !important;
+  border-color: #2d7d32;
+}
+
+.btn-bold-green:hover,
+.btn-bold-green:focus {
+  background-color: #74523b;
+  color: white;
+  border-color: black;
+}
+
+.searched-word {
+  font-size: 2rem;
+  font-weight: 600;
 }
 
 /* Responsive text scaling and padding tweaks if needed */
